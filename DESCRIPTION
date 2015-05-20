@@ -1,0 +1,16 @@
+Package: ClustOfVar
+Type: Package
+Title: Clustering of variables
+Version: 1.1
+Date: 2015-04-21
+Author: Marie Chavent and Vanessa Kuentz and Amaury Labenne and Benoit Liquet and Jerome Saracco
+Maintainer: <marie.chavent@u-bordeaux.fr>
+Description: Cluster analysis of a set of variables. Variables can be
+    quantitative, qualitative or a mixture of both.
+License: GPL (>=2.0)
+Depends: R(>= 2.10.0), 
+         PCAmixdata,
+
+
+
+
