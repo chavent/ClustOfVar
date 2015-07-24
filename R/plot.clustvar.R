@@ -41,7 +41,7 @@ plot.clustvar<-function(x,...){
   
   for (i in 1:k){
     cutmix<-splitmix(base.cluster[[i]])
-    res.PCAmix<-PCAmix(X.quanti=cutmix$X.quanti, X.quali=cutmix$X.quali, rename.level=TRUE, graph=FALSE)
+    res.PCAmix<-PCAmix(data=base.cluster[[i]], rename.level=TRUE, graph=FALSE)
     typ.group<-cutmix$'typ.group'
     
     if (typ.group=="QT"){
