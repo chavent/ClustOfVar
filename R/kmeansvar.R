@@ -16,12 +16,10 @@
 ##' all cases a numerical variable. Missing values are replaced by means for
 ##' quantitative variables and by zeros in the indicator matrix for qualitative
 ##' variables. 
-##' @param X.quanti a numeric matrix of data, or an object that can be coerced
-##' to such a matrix (such as a numeric vector or a data frame with all numeric
-##' columns).
-##' @param X.quali a categorical matrix of data, or an object that can be
-##' coerced to such a matrix (such as a character vector, a factor or a data
-##' frame with all factor columns).
+##' 
+##' @param data a dataframe containing data with quantitative and qualitative variables
+##'  to be analyzed. Qualitative variable must be coded as factors.
+##' 
 ##' @param init either the number of clusters or an initial partition (a vector
 ##' of integers indicating the cluster to which each variable is allocated).
 ##' If \code{init} is a number, a random set of (distinct) columns in
@@ -74,25 +72,29 @@
 ##' 
 ##' data(decathlon) 
 ##' #choice of the number of clusters
-##' tree <- hclustvar(X.quanti=decathlon[,1:10])
+##' tree <- hclustvar(data=decathlon[,1:10])
 ##' stab <- stability(tree,B=60)
 ##' #a random set of variables is chosen as the initial cluster centers, nstart=10 times
-##' part1 <- kmeansvar(X.quanti=decathlon[,1:10],init=5,nstart=10)
+##' part1 <- kmeansvar(data=decathlon[,1:10],init=5,nstart=10)
 ##' summary(part1)
 ##' #the partition from the hierarchical clustering is chosen as initial partition
 ##' part_init<-cutreevar(tree,5)$cluster
-##' part2<-kmeansvar(X.quanti=decathlon[,1:10],init=part_init,matsim=TRUE)
+##' part2<-kmeansvar(data=decathlon[,1:10],init=part_init,matsim=TRUE)
 ##' summary(part2)
 ##' part2$sim
 ##' 
 kmeansvar <-
-function(X.quanti=NULL,X.quali=NULL,init,iter.max=150,nstart=1,matsim=FALSE)
+function(data=NULL,init,iter.max=150,nstart=1,matsim=FALSE)
 {
 #init:  Either the number of clusters or a vector with group memberships
 #iter.max: The maximum number of iterations allowed.
 #nstart: If init is a number, how many random sets should be chosen?
 
 	cl <- match.call()
+	split.data<-splitmix(data)
+	X.quanti<-split.data$X.quanti
+	X.quali<-split.data$X.quali
+  
 	rec <- recod(X.quanti,X.quali)
 
 	n <- rec$n

@@ -4,16 +4,11 @@
 \alias{hclustvar}
 \title{Hierarchical clustering of variables}
 \usage{
-hclustvar(X.quanti = NULL, X.quali = NULL, init = NULL)
+hclustvar(data = NULL, init = NULL)
 }
 \arguments{
-\item{X.quanti}{a numeric matrix of data, or an object that can be coerced
-to such a matrix (such as a numeric vector or a data frame with all numeric
-columns).}
-
-\item{X.quali}{a categorical matrix of data, or an object that can be
-coerced to such a matrix (such as a character vector, a factor or a data
-frame with all factor columns).}
+\item{data}{a dataframe containing data with quantitative and qualitative variables
+ to be analyzed. Qualitative variable must be coded as factors.}
 
 \item{init}{an initial partition (a vector of integers indicating the
 cluster to which each variable is allocated).}
@@ -51,39 +46,36 @@ data in two separated dataframes.
 \examples{
 #quantitative variables
 data(decathlon)
-tree <- hclustvar(X.quanti=decathlon[,1:10], X.quali=NULL, init=NULL)
+tree <- hclustvar(data=decathlon[,1:10], init=NULL)
 plot(tree)
 
 #qualitative variables with missing values
 data(vnf)
-tree_NA <- hclustvar(X.quali=vnf, X.quanti=NULL)
+tree_NA <- hclustvar(data=vnf)
 plot(tree_NA)
 dev.new()
 vnf2<-na.omit(vnf)
-tree <- hclustvar(X.quali=vnf2, X.quanti=NULL)
+tree <- hclustvar(data=vnf2)
 plot(tree)
 
 #mixture of quantitative and qualitative variables
 data(wine)
-X.quanti <- splitmix(wine)$X.quanti[,1:27]
-X.quali <- splitmix(wine)$X.quali
-tree <- hclustvar(X.quanti,X.quali)
+tree <- hclustvar(data=wine)
 plot(tree)
 
 #combined clustering
 #library(mixOmics)
 #data(breast.tumors)
-#X.quanti <- breast.tumors$gene.exp
-#init<- kmeansvar(X.quanti,init=100)$cluster
-#tree <- hclustvar(X.quanti,init=init)
+#data <- breast.tumors$gene.exp
+#init<- kmeansvar(data=breast.tumors$gene.exp, init=100)$cluster
+#tree <- hclustvar(data=breast.tumors$gene.exp, init=init)
 #plot(tree)
 
 #data(yeast)
-#X.quanti <- yeast$data
-#tree <- hclustvar(X.quanti)
+#tree <- hclustvar(data=yeast$data)
 #plot(tree)
 #init<- cutreevar(tree,k=10)$cluster
-#tree2 <- hclustvar(X.quanti,init=init)
+#tree2 <- hclustvar(data=yeast$data,init=init)
 #plot(tree2)
 
 #cutreevar(tree,3)$cluster

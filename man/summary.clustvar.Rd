@@ -26,7 +26,7 @@ This is a method for the function summary for objects of the class
 }
 \examples{
 data(decathlon)
-part<-kmeansvar(X.quanti=decathlon[,1:10],init=5)
+part<-kmeansvar(data=decathlon[,1:10],init=5)
 summary(part)
 }
 \seealso{

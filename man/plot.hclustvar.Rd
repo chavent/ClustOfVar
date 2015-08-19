@@ -29,9 +29,7 @@ and aggregation levels plot.
 }
 \examples{
 data(wine)
-X.quanti <- wine[,c(3:29)]
-X.quali <- wine[,c(1,2)]
-tree <- hclustvar(X.quanti,X.quali)
+tree <- hclustvar(data=wine)
 plot(tree)
 
 # 2 plots on 1 page

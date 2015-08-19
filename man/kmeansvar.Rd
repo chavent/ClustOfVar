@@ -4,17 +4,11 @@
 \alias{kmeansvar}
 \title{k-means clustering of variables}
 \usage{
-kmeansvar(X.quanti = NULL, X.quali = NULL, init, iter.max = 150,
-  nstart = 1, matsim = FALSE)
+kmeansvar(data = NULL, init, iter.max = 150, nstart = 1, matsim = FALSE)
 }
 \arguments{
-\item{X.quanti}{a numeric matrix of data, or an object that can be coerced
-to such a matrix (such as a numeric vector or a data frame with all numeric
-columns).}
-
-\item{X.quali}{a categorical matrix of data, or an object that can be
-coerced to such a matrix (such as a character vector, a factor or a data
-frame with all factor columns).}
+\item{data}{a dataframe containing data with quantitative and qualitative variables
+ to be analyzed. Qualitative variable must be coded as factors.}
 
 \item{init}{either the number of clusters or an initial partition (a vector
 of integers indicating the cluster to which each variable is allocated).
@@ -80,14 +74,14 @@ data in two separated dataframes.
 \examples{
 data(decathlon)
 #choice of the number of clusters
-tree <- hclustvar(X.quanti=decathlon[,1:10])
+tree <- hclustvar(data=decathlon[,1:10])
 stab <- stability(tree,B=60)
 #a random set of variables is chosen as the initial cluster centers, nstart=10 times
-part1 <- kmeansvar(X.quanti=decathlon[,1:10],init=5,nstart=10)
+part1 <- kmeansvar(data=decathlon[,1:10],init=5,nstart=10)
 summary(part1)
 #the partition from the hierarchical clustering is chosen as initial partition
 part_init<-cutreevar(tree,5)$cluster
-part2<-kmeansvar(X.quanti=decathlon[,1:10],init=part_init,matsim=TRUE)
+part2<-kmeansvar(data=decathlon[,1:10],init=part_init,matsim=TRUE)
 summary(part2)
 part2$sim
 }

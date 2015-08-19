@@ -16,9 +16,7 @@
 ##' @examples
 ##' 
 ##' data(wine)
-##' X.quanti <- wine[,c(3:29)] 
-##' X.quali <- wine[,c(1,2)] 
-##' tree <- hclustvar(X.quanti,X.quali)
+##' tree <- hclustvar(data=wine)
 ##' tree.cut<-cutree(tree,6)
 ##' 
 ##' #plot of scores on synthetic variables
