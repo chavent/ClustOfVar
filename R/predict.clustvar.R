@@ -7,8 +7,8 @@
 ##' The coefficients of these k linear combinations (one for each cluster) are used here to calculate new scores of a objects described in a new dataset (with the same variables).
 ##' The output is the matrix of the scores of these new objects on the k synthetic variables.
 ##' @param object  an object of class clustvar
-##' @param data a dataframe containing data with quantitative and qualitative variables
-##'  to be analyzed. Qualitative variable must be coded as factors.
+##' @param X.quanti  numeric matrix of data for the new objects
+##' @param X.quali  a categorical matrix of data for the new objects
 ##' @param \dots Further arguments to be passed to or from other methods. They
 ##' are ignored in this function.
 ##' @return Returns the matrix of the scores of the new objects on the k syntetic variables of the k-clusters partition given in input.
@@ -18,18 +18,21 @@
 ##' n <- nrow(wine)
 ##' sub <- 10:20
 ##' data.sub <- wine[sub,] #learning sample
-##' part <-kmeansvar(data=data.sub, init=5)
-##' data.t <- wine[-sub, ] 
-##' new <- predict(part,data=data.t)
+##' X.quanti <- wine[sub,c(3:29)] #learning sample
+##' X.quali <- wine[sub,c(1,2)] 
+##' part <-kmeansvar(X.quanti, X.quali, init=5)
+#' X.quanti.t <- wine[-sub,c(3:29)] 
+#' X.quali.t <- wine[-sub,c(1,2)] 
+#' new <- predict(part,X.quanti.t,X.quali.t)
 
-predict.clustvar <- function(object, data=NULL,...)
+predict.clustvar <- function(object, X.quanti=NULL,X.quali=NULL,...)
 {
   part <- object
   if (!inherits(part, "clustvar")) 
     stop("use only with \"clustvar\" objects")
-  split.data<-splitmix(data)
-  X.quanti<-split.data$X.quanti
-  X.quali<-split.data$X.quali
+  #split.data<-splitmix(data)
+  #X.quanti<-split.data$X.quanti
+  #X.quali<-split.data$X.quali
   pfin <- part$cluster
   indexj <- part$rec$indexj
   indexg<-NULL

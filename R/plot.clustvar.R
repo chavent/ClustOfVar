@@ -1,4 +1,4 @@
-##' @export plot.clustvar
+##' @export
 ##' @name plot.clustvar
 ##' @method plot clustvar
 ##' @title  Plot scores of variables on synthetic variables.
@@ -16,8 +16,10 @@
 ##' @examples
 ##' 
 ##' data(wine)
-##' tree <- hclustvar(data=wine)
-##' tree.cut<-cutree(tree,6)
+##' X.quanti <- splitmix(wine)$X.quanti
+##' X.quali <- splitmix(wine)$X.quali
+##' tree <- hclustvar(X.quanti,X.quali)
+##' tree.cut<-cutreevar(tree,6)
 ##' 
 ##' #plot of scores on synthetic variables
 ##' res.plot<-plot(tree.cut) 
@@ -39,7 +41,7 @@ plot.clustvar<-function(x,...){
   
   for (i in 1:k){
     cutmix<-splitmix(base.cluster[[i]])
-    res.PCAmix<-PCAmix(data=base.cluster[[i]], rename.level=TRUE, graph=FALSE)
+    res.PCAmix<-PCAmix(X.quanti=cutmix$X.quanti, X.quali=cutmix$X.quali, rename.level=TRUE, graph=FALSE)
     typ.group<-cutmix$'typ.group'
     
     if (typ.group=="QT"){
@@ -60,7 +62,6 @@ plot.clustvar<-function(x,...){
     }
     
     if (typ.group=="MIX"){
-      par(mfrow=c(2, 1))
       coord.categ <-res.PCAmix$levels$coord[, 1,drop=F]
       coord.categ <- coord.categ[order(coord.categ), ,drop=F]      
       dotchart(coord.categ[, 1, drop=F],xlab=paste0("Synthetic variable of cluster ",i), 
@@ -75,7 +76,6 @@ plot.clustvar<-function(x,...){
       res.coord.quanti[[i]] <- coord.quanti[, 1, drop=F]
       #plot(res.PCAmix, choice="cor", axes=c(1,2),cex=0.5, main=paste0("Correlation circle of quantitative variables of ",names.group[i]))
     }
-    par(mfrow=c(1, 1))    
   }
   names(res.coord.quanti) <- names (res.coord.levels) <- paste("Cluster",1:k,sep="")
   res<-list(coord.quanti=res.coord.quanti, coord.levels=res.coord.levels)

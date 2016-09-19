@@ -1,6 +1,7 @@
 ##' @export
 ##' @name getnnsvar
-##' @title Nearest neighbor of variables based on a score between them
+##' @title Nearest neighbor of variables 
+##' @description Nearest neighbor of variables 
 ##' @param diss a dissimilarity matrix between variables
 ##' @param flag a vector of size \code{p} which indicates if we want to compute nearest
 ##'  neighbor of variable j (flag[j]=1) or not (flag[j]=0)

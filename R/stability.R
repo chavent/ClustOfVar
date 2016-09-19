@@ -26,10 +26,9 @@
 ##' @examples
 ##' 
 ##' data(decathlon) 
-##' tree <- hclustvar(data=decathlon[,1:10])
+##' tree <- hclustvar(X.quanti=decathlon[,1:10])
 ##' stab<-stability(tree,B=20)
 ##' plot(stab,nmax=7)
-##' dev.new()
 ##' boxplot(stab$matCR[,1:7])
 ##' 
 stability <-
@@ -52,11 +51,11 @@ function(tree,B=100,graph=TRUE)
 		Xboot.quali<-res1$Xboot.quali
       	# a ameliorer peut-etre
 		if (!is.null(Xboot.quanti)&& !is.null(Xboot.quali)) 
-			{clusmatboot <- hclustvar(data=cbind(Xboot.quanti,Xboot.quali))$clusmat}
+			{clusmatboot <- hclustvar(Xboot.quanti,Xboot.quali)$clusmat}
 		if (is.null(Xboot.quanti)&& !is.null(Xboot.quali)) 
-			{clusmatboot <- hclustvar(data=Xboot.quali)$clusmat}
+			{clusmatboot <- hclustvar(X.quali =Xboot.quali)$clusmat}
 		if (!is.null(Xboot.quanti)&& is.null(Xboot.quali)) 
-			{clusmatboot <- hclustvar(data=Xboot.quanti)$clusmat}	
+			{clusmatboot <- hclustvar(X.quanti=Xboot.quanti)$clusmat}	
 		for (i in 2:nmax) 
 			{matRandCorrige[b,i-1] <- rand(clusmat[,i],clusmatboot[,i],adj=TRUE)}
 		for (i in 2:nmax) 
