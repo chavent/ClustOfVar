@@ -1,10 +1,11 @@
 ##' @export
 ##' @name plot.clustvar
 ##' @method plot clustvar
-##' @title  Plot scores of variables on synthetic variables.
-##' @description Plot scores of variables of cluster k on the synthetic variable associated to the same cluster. For each cluster
-##' two plots are displayed: one for numerical variables (if available in the cluster) and one for levels of categorical
-##' variables (if available in the cluster).
+##' @title  Plot "loadings" in each cluster.
+##' @description Plot dotchart with the "loadings" of the variables in each cluster. The loading of a
+##' numerical variable is the correlation between this variables and the synthetic variable of its cluster.
+##' The loading of the level of a categorical variable is the mean value of the synthetic variable
+##' of the cluster on observations having this level.
 ##' @param x an object of class \code{clustvar} obtained with \code{cutreevar} or \code{kmeansvar}.
 ##' @param \dots Further arguments to be passed to or from other methods. They
 ##' are ignored in this function.
@@ -25,6 +26,8 @@
 ##' res.plot<-plot(tree.cut) 
 ##' res.plot$coord.quanti
 ##' res.plot$coord.levels
+
+
 plot.clustvar<-function(x,...){
   
   obj<-x
@@ -47,8 +50,8 @@ plot.clustvar<-function(x,...){
     if (typ.group=="QT"){
       coord.quanti <- res.PCAmix$quanti$coord[, 1,drop=F]
       coord.quanti <- coord.quanti[order(coord.quanti), ,drop=F]
-      dotchart(coord.quanti[, 1, drop=F],xlab=paste0("Synthetic variable of cluster ",i), 
-               main="Correlations between quantitative variables and the synthetic variable", xlim=c(-1,1),gcolor="white",...)
+      dotchart(coord.quanti[, 1, drop=F],xlab="Correlation with the synthetic variable", 
+               main=paste0("Cluster ",i), xlim=c(-1,1),gcolor="white",...)
       res.coord.quanti[[i]] <- coord.quanti[, 1, drop=F]
       #plot(res.PCAmix, choice="cor", axes=c(1,2),main=paste0("Correlation circle of quantitative variables of ",names.group[i]))
     }
@@ -56,23 +59,23 @@ plot.clustvar<-function(x,...){
     if (typ.group=="QL"){
       coord.categ <- res.PCAmix$levels$coord[, 1,drop=F]
       coord.categ <- coord.categ[order(coord.categ), ,drop=F]      
-      dotchart(coord.categ[, 1, drop=F],xlab=paste0("Synthetic variable of cluster ",i), 
-               main="Coordinates of levels of qualitative variables on the synthetic variable",gcolor="white",...)
+      dotchart(coord.categ[, 1, drop=F],xlab="Mean value of the synthetic variable", 
+               main=paste0("Cluster ",i),gcolor="white",...)
       res.coord.levels[[i]] <- coord.categ[, 1, drop=F]
     }
     
     if (typ.group=="MIX"){
       coord.categ <-res.PCAmix$levels$coord[, 1,drop=F]
       coord.categ <- coord.categ[order(coord.categ), ,drop=F]      
-      dotchart(coord.categ[, 1, drop=F],xlab=paste0("Synthetic variable of cluster ",i), 
-               main="Coordinates of levels of qualitative variable on the synthetic variable",gcolor="white",...)
+      dotchart(coord.categ[, 1, drop=F],xlab="Mean value of the synthetic variable", 
+               main=paste0("Cluster ",i),gcolor="white",...)
       res.coord.levels[[i]] <- coord.categ[, 1, drop=F]
       
       
       coord.quanti <- res.PCAmix$quanti$coord[, 1,drop=F]
       coord.quanti <- coord.quanti[order(coord.quanti), ,drop=F]      
-      dotchart(coord.quanti[, 1, drop=F],xlab=paste0("Synthetic variable of cluster ",i), 
-               main="Correlations between quantitative variables and the synthetic variable", xlim=c(-1,1),gcolor="white",...)  
+      dotchart(coord.quanti[, 1, drop=F],xlab="Correlation with the synthetic variable", 
+               main=paste0("Cluster ",i), xlim=c(-1,1),gcolor="white",...)  
       res.coord.quanti[[i]] <- coord.quanti[, 1, drop=F]
       #plot(res.PCAmix, choice="cor", axes=c(1,2),cex=0.5, main=paste0("Correlation circle of quantitative variables of ",names.group[i]))
     }

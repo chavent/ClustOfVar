@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot.clustvar.R
 \name{plot.clustvar}
 \alias{plot.clustvar}
-\title{Plot scores of variables on synthetic variables.}
+\title{Plot "loadings" in each cluster.}
 \usage{
 \method{plot}{clustvar}(x, ...)
 }
@@ -19,9 +19,10 @@ are ignored in this function.}
  variable associate to the same cluster k}
 }
 \description{
-Plot scores of variables of cluster k on the synthetic variable associated to the same cluster. For each cluster
-two plots are displayed: one for numerical variables (if available in the cluster) and one for levels of categorical
-variables (if available in the cluster).
+Plot dotchart with the "loadings" of the variables in each cluster. The loading of a
+numerical variable is the correlation between this variables and the synthetic variable of its cluster.
+The loading of the level of a categorical variable is the mean value of the synthetic variable
+of the cluster on observations having this level.
 }
 \examples{
 

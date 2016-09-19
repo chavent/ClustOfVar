@@ -55,7 +55,7 @@ descript<-function(part,rec,matsim=FALSE)
     clus<-which(part==g)
     #correlation ratio
     C <- matrix(NA, nrow=length(clus), ncol=2)
-    colnames(C)<-c("squared loading","correlations for numeric variables")
+    colnames(C)<-c("squared loading","correlation")
     rownames(C)<-names(clus)
     for (i in 1:length(clus)){
       C[i,1] <- mixedVarSim(latent.var[,g],X[,clus[i]])
