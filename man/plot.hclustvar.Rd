@@ -21,20 +21,16 @@ Dendrogram of the hierarchy of variables resulting from \code{hclustvar}
 and aggregation levels plot.
 }
 \examples{
-
 data(wine)
-X.quanti <- splitmix(wine)$X.quanti
-X.quali <- splitmix(wine)$X.quali
+X.quanti <- PCAmixdata::splitmix(wine)$X.quanti
+X.quali <- PCAmixdata::splitmix(wine)$X.quali
 tree <- hclustvar(X.quanti,X.quali)
 plot(tree)
 
 #Aggregation levels plot
-plot(tree,type="index") 
+plot(tree,type="index")
 
 }
 \seealso{
 \code{\link{hclustvar}}
 }
-\keyword{cluster}
-\keyword{multivariate}
-

@@ -13,8 +13,7 @@
 
 \item{X.quali}{a categorical matrix of data for the new objects}
 
-\item{\dots}{Further arguments to be passed to or from other methods. They
-are ignored in this function.}
+\item{\dots}{Further arguments to be passed to or from other methods. They are ignored in this function.}
 }
 \value{
 Returns the matrix of the scores of the new objects on the k syntetic variables of the k-clusters partition given in input.
@@ -26,19 +25,14 @@ The coefficients of these k linear combinations (one for each cluster) are used 
 The output is the matrix of the scores of these new objects on the k synthetic variables.
 }
 \examples{
- 
 data(wine)
 n <- nrow(wine)
 sub <- 10:20
 data.sub <- wine[sub,] #learning sample
 X.quanti <- wine[sub,c(3:29)] #learning sample
-X.quali <- wine[sub,c(1,2)] 
+X.quali <- wine[sub,c(1,2)]
 part <-kmeansvar(X.quanti, X.quali, init=5)
-X.quanti.t <- wine[-sub,c(3:29)] 
-X.quali.t <- wine[-sub,c(1,2)] 
+X.quanti.t <- wine[-sub,c(3:29)]
+X.quali.t <- wine[-sub,c(1,2)]
 new <- predict(part,X.quanti.t,X.quali.t)
 }
-\author{
-Marie Chavent \email{Marie.Chavent@u-bordeaux.fr}, Vanessa Kuentz, Amaury Labenne, Benoit Liquet, Jerome Saracco
-}
-

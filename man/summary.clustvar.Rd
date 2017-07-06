@@ -25,8 +25,7 @@ This is a method for the function summary for objects of the class
 \code{clustvar}.
 }
 \examples{
-
-data(decathlon) 
+data(decathlon)
 part<-kmeansvar(X.quanti=decathlon[,1:10],init=5)
 summary(part)
 
@@ -34,4 +33,3 @@ summary(part)
 \seealso{
 \code{\link{kmeansvar}}, \code{\link{cutreevar}}
 }
-

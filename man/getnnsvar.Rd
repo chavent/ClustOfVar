@@ -15,5 +15,3 @@ neighbor of variable j (flag[j]=1) or not (flag[j]=0)}
 \description{
 Nearest neighbor of variables
 }
-\keyword{internal}
-

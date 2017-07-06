@@ -11,24 +11,17 @@ rand(P, Q, symmetric = TRUE, adj = TRUE)
 
 \item{Q}{a factor, e.g., the second partition.}
 
-\item{symmetric}{a boolean. If 'FALSE' the asymmetrical Rand index is
+\item{symmetric}{a boolean. If FALSE the asymmetrical Rand index is
 calculated.}
 
-\item{adj}{a boolean. If 'TRUE' the corrected index is calculated.}
+\item{adj}{a boolean. If TRUE the corrected index is calculated.}
 }
 \description{
 Returns the Rand index, the corrected Rand index or the asymmetrical Rand
 index.  The asymmetrical Rand index (corrected or not) measures the
-inclusion of a partition 'P' into and partition 'Q' with the number of
-clusters in 'P' greater than the number of clusters in 'Q'.
-}
-\author{
-Marie Chavent <marie.chavent@u-bordeaux.fr>, Vanessa Kuentz, Amaury Labenne,
-Benoit Liquet, Jerome Saracco
+inclusion of a partition P into and partition Q with the number of
+clusters in P greater than the number of clusters in Q.
 }
 \seealso{
 \code{\link{stability}}
 }
-\keyword{cluster}
-\keyword{multivariate}
-

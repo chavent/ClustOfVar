@@ -3,13 +3,20 @@ Type: Package
 Title: Clustering of variables
 Version: 1.1
 Date: 2015-04-21
-Author: Marie Chavent and Vanessa Kuentz and Amaury Labenne and Benoit Liquet
-    and Jerome Saracco
-Maintainer: <marie.chavent@u-bordeaux.fr>
-Description: Cluster analysis of a set of variables. Variables can be
-    quantitative, qualitative or a mixture of both.
+Authors@R: c(person("Marie", "Chavent", role = c("aut", "cre"),
+                    email = "Marie.Chavent@u-bordeaux.fr"),
+             person("Vanessa", "Kuentz", role = "aut"),
+             person("Benoit", "Liquet", role = "aut"),
+             person("Jerome", "Saracco", role = "aut"))
+Author: Marie Chavent [aut, cre],
+    Vanessa Kuentz [aut],
+    Benoit Liquet [aut],
+    Jerome Saracco [aut]
+Maintainer: Marie Chavent <Marie.Chavent@u-bordeaux.fr>
+Description: Cluster analysis of a set of variables. Variables can be quantitative, qualitative or a mixture of both.
 License: GPL (>=2.0)
 Depends:
-    R(>= 2.10.0),
-    PCAmixdata,
-RoxygenNote: 5.0.1
+    R (>= 3.2.2)
+Imports:
+  PCAmixdata
+RoxygenNote: 6.0.1

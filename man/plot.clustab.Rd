@@ -20,8 +20,7 @@ Plot of the index of stability of the partitions against the number of
 clusters.
 }
 \examples{
-
-data(decathlon) 
+data(decathlon)
 tree <- hclustvar(X.quanti=decathlon[,1:10])
 stab<-stability(tree,B=20)
 plot(stab,nmax=7)
@@ -30,6 +29,3 @@ plot(stab,nmax=7)
 \seealso{
 \code{\link{stability}}
 }
-\keyword{cluster}
-\keyword{multivariate}
-

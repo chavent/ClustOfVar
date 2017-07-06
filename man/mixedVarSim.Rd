@@ -20,10 +20,3 @@ correlation ratio when one variable is quantitative and the other one is
 qualitative; the square of the canonical correlation between two sets of
 dummy variables, when the two variables are qualitative.
 }
-\author{
-Marie Chavent \email{Marie.Chavent@u-bordeaux.fr}, Vanessa Kuentz,
-Benoit Liquet, Jerome Saracco
-}
-\keyword{cluster}
-\keyword{multivariate}
-

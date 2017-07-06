@@ -22,12 +22,8 @@ measure of aggregation is equal to the decrease in homogeneity for the
 clusters being merged.
 }
 \examples{
-
 data(decathlon)
-A <- recod(X.quanti=decathlon[1:10,1:5], X.quali=NULL)$Z
-B <- recod(X.quanti=decathlon[1:10,6:10], X.quali=NULL)$Z
+A <- PCAmixdata::recod(X.quanti=decathlon[1:10,1:5], X.quali=NULL)$Z
+B <- PCAmixdata::recod(X.quanti=decathlon[1:10,6:10], X.quali=NULL)$Z
 clust_diss(A,B)
-
 }
-\keyword{internal}
-

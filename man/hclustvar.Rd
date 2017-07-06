@@ -7,25 +7,24 @@
 hclustvar(X.quanti = NULL, X.quali = NULL, init = NULL)
 }
 \arguments{
-\item{X.quanti}{a numeric matrix of data, or an object that can be coerced to such a matrix 
+\item{X.quanti}{a numeric matrix of data, or an object that can be coerced to such a matrix
 (such as a numeric vector or a data frame with all numeric columns).}
 
-\item{X.quali}{a categorical matrix of data, or an object that can be coerced to such a matrix 
+\item{X.quali}{a categorical matrix of data, or an object that can be coerced to such a matrix
 (such as a character vector, a factor or a data frame with all factor columns).}
 
 \item{init}{an initial partition (a vector of integers indicating the
 cluster to which each variable is allocated).}
 }
 \value{
-\item{height }{a set of p-1 non-decreasing real values: the values
-of the aggregation criterion. } \item{clusmat }{a p by p matrix with group
+\item{height }{a set of p-1 non-decreasing real values: the values of the aggregation criterion. } 
+\item{clusmat }{a p by p matrix with group
 memberships where each column k corresponds to the elements of the
-partition in k clusters.} \item{merge }{a p-1 by 2 matrix.  Row i of
-\code{merge} describes the merging of clusters at step i of the clustering.
+partition in k clusters.} 
+\item{merge }{a p-1 by 2 matrix.  Row i of \code{merge} describes the merging of clusters at step i of the clustering.
 If an element j in the row is negative, then observation -j was merged at
 this stage.  If j is positive then the merge was with the cluster formed at
-the (earlier) stage j of the algorithm.  Thus negative entries in
-\code{merge} indicate agglomerations of singletons, and positive entries
+the (earlier) stage j of the algorithm.  Thus negative entries in \code{merge} indicate agglomerations of singletons, and positive entries
 indicate agglomerations of non-singletons. }
 }
 \description{
@@ -42,19 +41,18 @@ special cases. Missing values are replaced by means for quantitative
 variables and by zeros in the indicator matrix for qualitative variables.
 }
 \details{
-If the quantitative and qualitative data are in a same dataframe, the function 
-\code{splitmix} can be used to extract automatically the qualitative and the quantitative 
+If the quantitative and qualitative data are in a same dataframe, the function
+\code{PCAmixdata::splitmix} can be used to extract automatically the qualitative and the quantitative
 data in two separated dataframes.
 }
 \examples{
-
 #quantitative variables
 data(decathlon)
 tree <- hclustvar(X.quanti=decathlon[,1:10], init=NULL)
 plot(tree)
 
 #qualitative variables with missing values
-data(vnf) 
+data(vnf)
 tree_NA <- hclustvar(X.quali=vnf)
 plot(tree_NA)
 vnf2<-na.omit(vnf)
@@ -63,29 +61,20 @@ plot(tree)
 
 #mixture of quantitative and qualitative variables
 data(wine)
-lapply(wine,class)
-X.quanti <- splitmix(wine)$X.quanti
-X.quali <- splitmix(wine)$X.quali
+X.quanti <- PCAmixdata::splitmix(wine)$X.quanti
+X.quali <- PCAmixdata::splitmix(wine)$X.quali
 tree <- hclustvar(X.quanti,X.quali)
 plot(tree)
 
-}
-\author{
-Marie Chavent \email{marie.chavent@u-bordeaux.fr}, Vanessa Kuentz, Amaury Labenne
-Benoit Liquet, Jerome Saracco
 }
 \references{
 Chavent, M., Liquet, B., Kuentz, V., Saracco, J. (2012),
 ClustOfVar: An R Package for the Clustering of Variables. Journal of
 Statistical Software, Vol. 50, pp. 1-16.
-
-Chavent, M., Kuentz, V., Saracco, J. (2011), Orthogonal Rotation in PCAMIX.
-Advances in Classification and Data Analysis, Vol. 6, pp. 131-146.
 }
 \seealso{
 \code{\link{cutreevar}}, \code{\link{plot.hclustvar}},
-\code{\link{stability}},\code{\link{kmeansvar}},\code{\link{splitmix}}
+\code{\link{stability}}
 }
 \keyword{cluster}
 \keyword{multivariate}
-

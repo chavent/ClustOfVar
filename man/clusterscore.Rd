@@ -25,10 +25,8 @@ squared correlations or correlation ratios to the synthetic variable. It measure
 \examples{
 data(decathlon)
 A <- 1:5
-Z <- recod(X.quanti=decathlon[1:10,A], X.quali=NULL)$Z
+Z <- PCAmixdata::recod(X.quanti=decathlon[1:10,A], X.quali=NULL)$Z
 clusterscore(Z)
 Z\%*\%as.matrix(clusterscore(Z)$v)
 clusterscore(Z)$f
 }
-\keyword{internal}
-

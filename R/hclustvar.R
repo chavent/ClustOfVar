@@ -1,80 +1,68 @@
-##' @export
-##' @name hclustvar
-##' @title  Hierarchical clustering of variables
-##' 
-##' @description Ascendant hierarchical clustering of a set of variables.  Variables can be
-##' quantitative, qualitative or a mixture of both. The aggregation criterion
-##' is the decrease in homogeneity for the clusters being merged. The
-##' homogeneity of a cluster is the sum of the correlation ratio (for
-##' qualitative variables) and the squared correlation (for quantitative
-##' variables) between the variables and the center of the cluster which is the
-##' first principal component of PCAmix. PCAmix is defined for a mixture of
-##' qualitative and quantitative variables and includes ordinary principal
-##' component analysis (PCA) and multiple correspondence analysis (MCA) as
-##' special cases. Missing values are replaced by means for quantitative
-##' variables and by zeros in the indicator matrix for qualitative variables.
-##' 
-##' @param X.quanti a numeric matrix of data, or an object that can be coerced to such a matrix 
-##' (such as a numeric vector or a data frame with all numeric columns).
-##' @param X.quali a categorical matrix of data, or an object that can be coerced to such a matrix 
-##' (such as a character vector, a factor or a data frame with all factor columns).
-##' @param init an initial partition (a vector of integers indicating the
-##' cluster to which each variable is allocated).
-##' @return \item{height }{a set of p-1 non-decreasing real values: the values
-##' of the aggregation criterion. } \item{clusmat }{a p by p matrix with group
-##' memberships where each column k corresponds to the elements of the
-##' partition in k clusters.} \item{merge }{a p-1 by 2 matrix.  Row i of
-##' \code{merge} describes the merging of clusters at step i of the clustering.
-##' If an element j in the row is negative, then observation -j was merged at
-##' this stage.  If j is positive then the merge was with the cluster formed at
-##' the (earlier) stage j of the algorithm.  Thus negative entries in
-##' \code{merge} indicate agglomerations of singletons, and positive entries
-##' indicate agglomerations of non-singletons. }
-##' @details If the quantitative and qualitative data are in a same dataframe, the function 
-##' \code{splitmix} can be used to extract automatically the qualitative and the quantitative 
-##' data in two separated dataframes.
-##' @author Marie Chavent \email{marie.chavent@@u-bordeaux.fr}, Vanessa Kuentz, Amaury Labenne
-##' Benoit Liquet, Jerome Saracco
-##' @seealso \code{\link{cutreevar}}, \code{\link{plot.hclustvar}},
-##' \code{\link{stability}},\code{\link{kmeansvar}},\code{\link{splitmix}}
-##' @references Chavent, M., Liquet, B., Kuentz, V., Saracco, J. (2012),
-##' ClustOfVar: An R Package for the Clustering of Variables. Journal of
-##' Statistical Software, Vol. 50, pp. 1-16.
-##' 
-##' Chavent, M., Kuentz, V., Saracco, J. (2011), Orthogonal Rotation in PCAMIX.
-##' Advances in Classification and Data Analysis, Vol. 6, pp. 131-146.
-##' @keywords cluster multivariate
-##' @examples 
-##' 
-##' #quantitative variables
-##' data(decathlon)
-##' tree <- hclustvar(X.quanti=decathlon[,1:10], init=NULL)
-##' plot(tree)
-##' 
-##' #qualitative variables with missing values
-##' data(vnf) 
-##' tree_NA <- hclustvar(X.quali=vnf)
-##' plot(tree_NA)
-##' vnf2<-na.omit(vnf)
-##' tree <- hclustvar(X.quali=vnf2)
-##' plot(tree)
-##' 
-##' #mixture of quantitative and qualitative variables
-##' data(wine)
-##' lapply(wine,class)
-##' X.quanti <- splitmix(wine)$X.quanti
-##' X.quali <- splitmix(wine)$X.quali
-##' tree <- hclustvar(X.quanti,X.quali)
-##' plot(tree)
-##' 
-##' @import PCAmixdata
+#' @export
+#' @importFrom stats cor cutree var
+#' @name hclustvar
+#' @title  Hierarchical clustering of variables
+#' @description Ascendant hierarchical clustering of a set of variables.  Variables can be
+#' quantitative, qualitative or a mixture of both. The aggregation criterion
+#' is the decrease in homogeneity for the clusters being merged. The
+#' homogeneity of a cluster is the sum of the correlation ratio (for
+#' qualitative variables) and the squared correlation (for quantitative
+#' variables) between the variables and the center of the cluster which is the
+#' first principal component of PCAmix. PCAmix is defined for a mixture of
+#' qualitative and quantitative variables and includes ordinary principal
+#' component analysis (PCA) and multiple correspondence analysis (MCA) as
+#' special cases. Missing values are replaced by means for quantitative
+#' variables and by zeros in the indicator matrix for qualitative variables.
+#' @param X.quanti a numeric matrix of data, or an object that can be coerced to such a matrix
+#' (such as a numeric vector or a data frame with all numeric columns).
+#' @param X.quali a categorical matrix of data, or an object that can be coerced to such a matrix
+#' (such as a character vector, a factor or a data frame with all factor columns).
+#' @param init an initial partition (a vector of integers indicating the
+#' cluster to which each variable is allocated).
+#' @return 
+#' \item{height }{a set of p-1 non-decreasing real values: the values of the aggregation criterion. } 
+#' \item{clusmat }{a p by p matrix with group
+#' memberships where each column k corresponds to the elements of the
+#' partition in k clusters.} 
+#' \item{merge }{a p-1 by 2 matrix.  Row i of \code{merge} describes the merging of clusters at step i of the clustering.
+#' If an element j in the row is negative, then observation -j was merged at
+#' this stage.  If j is positive then the merge was with the cluster formed at
+#' the (earlier) stage j of the algorithm.  Thus negative entries in \code{merge} indicate agglomerations of singletons, and positive entries
+#' indicate agglomerations of non-singletons. }
+#' @details If the quantitative and qualitative data are in a same dataframe, the function
+#' \code{PCAmixdata::splitmix} can be used to extract automatically the qualitative and the quantitative
+#' data in two separated dataframes.
+#' @seealso \code{\link{cutreevar}}, \code{\link{plot.hclustvar}},
+#' \code{\link{stability}}
+#' @references Chavent, M., Liquet, B., Kuentz, V., Saracco, J. (2012),
+#' ClustOfVar: An R Package for the Clustering of Variables. Journal of
+#' Statistical Software, Vol. 50, pp. 1-16.
+#' @keywords cluster multivariate
+#' @examples
+#' #quantitative variables
+#' data(decathlon)
+#' tree <- hclustvar(X.quanti=decathlon[,1:10], init=NULL)
+#' plot(tree)
+#'
+#' #qualitative variables with missing values
+#' data(vnf)
+#' tree_NA <- hclustvar(X.quali=vnf)
+#' plot(tree_NA)
+#' vnf2<-na.omit(vnf)
+#' tree <- hclustvar(X.quali=vnf2)
+#' plot(tree)
+#'
+#' #mixture of quantitative and qualitative variables
+#' data(wine)
+#' X.quanti <- PCAmixdata::splitmix(wine)$X.quanti
+#' X.quali <- PCAmixdata::splitmix(wine)$X.quali
+#' tree <- hclustvar(X.quanti,X.quali)
+#' plot(tree)
+#'
 
 hclustvar <- function(X.quanti=NULL, X.quali=NULL, init=NULL) {
   cl <- match.call()
-  #split.data<-splitmix(data)
-  #X.quanti<-split.data$X.quanti
-  #X.quali<-split.data$X.quali
-  rec <- recod(X.quanti,X.quali,rename.level=TRUE)
+  rec <- PCAmixdata::recod(X.quanti,X.quali,rename.level=TRUE)
   X <- rec$X     
   Z <- rec$Z		
   indexj <- rec$indexj 
@@ -87,10 +75,6 @@ hclustvar <- function(X.quanti=NULL, X.quali=NULL, init=NULL) {
     p <- max(init)
     labels <- paste("cluster", 1:p, sep = "")
   }
-  
-  #X.quanti<-rec$X.quanti
-  #X.quali<-rec$X.quali
-  
   
   if (p<=2) stop("The number of variables must be greater than 2.")
   MAXVAL <- 1.0e12

@@ -19,4 +19,3 @@ This is a method for the function summary for objects of the class
 \seealso{
 \code{\link{stability}}
 }
-

@@ -17,5 +17,3 @@ frame with all factor columns).}
 \description{
 Draw a bootstrap sample from X.quanti and a bootstrap sample from X.quali
 }
-\keyword{internal}
-

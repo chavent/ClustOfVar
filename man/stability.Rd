@@ -30,21 +30,13 @@ This graphical representation helps in the determination of a suitable
 numbers of clusters.
 }
 \examples{
-
-data(decathlon) 
+data(decathlon)
 tree <- hclustvar(X.quanti=decathlon[,1:10])
 stab<-stability(tree,B=20)
 plot(stab,nmax=7)
 boxplot(stab$matCR[,1:7])
 
 }
-\author{
-Marie Chavent <marie.chavent@u-bordeaux.fr>, Vanessa Kuentz, Amaury Labenne,
-Benoit Liquet, Jerome Saracco
-}
 \seealso{
 \code{\link{plot.clustab}}, \code{\link{hclustvar}}
 }
-\keyword{cluster}
-\keyword{multivariate}
-
