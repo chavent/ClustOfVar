@@ -1,8 +1,7 @@
 Package: ClustOfVar
 Type: Package
-Title: Clustering of variables
+Title: Clustering of Variables
 Version: 1.1
-Date: 2015-04-21
 Authors@R: c(person("Marie", "Chavent", role = c("aut", "cre"),
                     email = "Marie.Chavent@u-bordeaux.fr"),
              person("Vanessa", "Kuentz", role = "aut"),
@@ -16,7 +15,7 @@ Maintainer: Marie Chavent <Marie.Chavent@u-bordeaux.fr>
 Description: Cluster analysis of a set of variables. Variables can be quantitative, qualitative or a mixture of both.
 License: GPL (>=2.0)
 Depends:
-    R (>= 3.2.2)
+    R (>= 3.0.0)
 Imports:
   PCAmixdata
 RoxygenNote: 6.0.1
