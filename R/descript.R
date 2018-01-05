@@ -64,7 +64,7 @@ descript<-function(part,rec,matsim=FALSE)
         C[i,2]<-cor(X[,clus[i]], latent.var[,g], use="complete.obs")#ajout
     }
     #C<-C[order(abs(C[,2]),decreasing=TRUE), ] #ajout
-    C<-C[order(C[,1],decreasing=TRUE), ] #ajout
+    C<-C[order(C[,1],decreasing=TRUE), ,drop=FALSE] #ajout
     var[[g]] <- C
     #coefficients of the score function
     beta <- matrix(NA,length(v)+1,1)
