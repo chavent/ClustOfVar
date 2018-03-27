@@ -86,7 +86,7 @@
 kmeansvar <- function(X.quanti=NULL, X.quali=NULL, init,iter.max=150,nstart=1,matsim=FALSE)
 {
   cl <- match.call()
-  rec <- PCAmixdata::recod(X.quanti,X.quali)
+  rec <- PCAmixdata::recod(X.quanti,X.quali, rename.level=TRUE)
   n <- rec$n
   p <- rec$p		#total number of variables
   p1 <- rec$p1	#number of numerical variables
@@ -176,8 +176,12 @@ kmeansvar <- function(X.quanti=NULL, X.quali=NULL, init,iter.max=150,nstart=1,ma
     stop("'init' must be a number or a vector")
   if (length(init) == 1) {
     k <- init 
-    centers <- sort(sample.int(p, k))
-    part <- as.factor(partinit(centers))
+    repeat {
+      centers <- sort(sample.int(p, k))
+      part <- as.factor(partinit(centers))
+      if (length(levels(part))==k) 
+        break
+    }
   } else {
     if (!is.integer(init))
       stop("init must be a vector of integer")
@@ -212,7 +216,8 @@ kmeansvar <- function(X.quanti=NULL, X.quali=NULL, init,iter.max=150,nstart=1,ma
         Zclass <- Z[,which(indexk==g)]
         latent <- clusterscore(Zclass)
         latent.var[,g] <- latent$f
-        sv[g] <- latent$sv }
+        sv[g] <- latent$sv 
+        }
       #Affectation step
       if (p1>0) {
         scorestand <- sweep(latent.var,2,STATS=sv,FUN="/")
@@ -235,12 +240,16 @@ kmeansvar <- function(X.quanti=NULL, X.quali=NULL, init,iter.max=150,nstart=1,ma
     return(list(latent.var=latent.var,part=part,wss=wss,iter=iter))
   }
   
-  res<-do_one(part)
+  res <- do_one(part)
   if (nstart >= 2) {
     best <- sum(res$wss)
     for (i in 2:nstart) {
-      centers <- sort(sample.int(p, k))
-      part<-as.factor(partinit(centers))
+      repeat {
+        centers <- sort(sample.int(p, k))
+        part <- as.factor(partinit(centers))
+        if (length(levels(part))==k) 
+          break
+      }
       res2 <- do_one(part)
       if ((z <- sum(res2$wss)) > best) {
         res <- res2
