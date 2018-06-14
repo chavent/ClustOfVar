@@ -1,4 +1,3 @@
-#' @export print.clustab
 #' @export
 #' @name print.clustab
 #' @title Print a 'clustab' object

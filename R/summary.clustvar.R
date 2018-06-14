@@ -1,4 +1,3 @@
-#' @export summary.clustvar
 #' @export
 #' @name summary.clustvar
 #' @title Summary of a 'hclustvar' object

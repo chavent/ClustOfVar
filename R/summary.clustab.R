@@ -1,4 +1,3 @@
-#' @export summary.clustab
 #' @export
 #' @name summary.clustab
 #' @title Summary of a 'clustab' object

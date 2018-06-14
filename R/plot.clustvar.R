@@ -1,4 +1,3 @@
-#' @export plot.clustvar
 #' @export
 #' @name plot.clustvar
 #' @title  Plot loadings in each cluster.

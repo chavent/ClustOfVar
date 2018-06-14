@@ -1,4 +1,3 @@
-#' @export print.hclustvar
 #' @export
 #' @name print.hclustvar
 #' @title Print a 'hclustvar' object

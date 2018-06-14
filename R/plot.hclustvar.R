@@ -1,4 +1,3 @@
-#' @export plot.hclustvar
 #' @export
 #' @name plot.hclustvar
 #' @importFrom graphics axis dotchart plot points

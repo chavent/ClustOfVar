@@ -1,4 +1,3 @@
-#' @export predict.clustvar
 #' @export
 #' @name predict.clustvar
 #' @title Scores of new objects on the synthetic variables of a given partition

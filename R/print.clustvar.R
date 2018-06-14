@@ -1,4 +1,3 @@
-#' @export print.clustvar
 #' @export
 #' @name print.clustvar
 #' @title Print an  object of class \code{clustvar}

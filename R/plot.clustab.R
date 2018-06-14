@@ -1,4 +1,3 @@
-#' @export plot.clustab
 #' @export
 #' @name plot.clustab
 #' @title  Plot of an index of stability of partitions of variables
