@@ -23,7 +23,7 @@
 #' @keywords internal
 descript<-function(part,rec,matsim=FALSE) 
 {  
-  k<-length(levels(as.factor(part)))
+  k <-length(levels(as.factor(part)))
   
   Z<-rec$Z
   X<-rec$X  
@@ -59,7 +59,7 @@ descript<-function(part,rec,matsim=FALSE)
     colnames(C)<-c("squared loading","correlation")
     rownames(C)<-names(clus)
     for (i in 1:length(clus)){
-      C[i,1] <- mixedVarSim(latent.var[,g],X[,clus[i]])
+      C[i,1] <- mixedVarSim(latent.var[,g],X[,clus[i],drop=FALSE])
       if (is.numeric(X[,clus[i]])) #ajout
         C[i,2]<-cor(X[,clus[i]], latent.var[,g], use="complete.obs")#ajout
     }
