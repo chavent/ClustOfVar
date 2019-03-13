@@ -18,4 +18,4 @@ Depends:
     R (>= 3.0.0)
 Imports:
   PCAmixdata
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1

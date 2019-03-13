@@ -36,7 +36,11 @@ predict.clustvar <- function(object, X.quanti=NULL,X.quali=NULL,...)
   for (i in 1:length(indexj))
     indexg[i]<-pfin[indexj[i]] #ds le cas quanti, indexg=pfin
   if (!is.null(X.quali)) 
-    G <- PCAmixdata::recodqual(X.quali) else G <- NULL
+    #G <- PCAmixdata::recodqual(X.quali) 
+  {
+    GNA <- PCAmixdata::tab.disjonctif.NA(X.quali, rename.level=FALSE)
+    G <- replace(GNA,is.na(GNA),0)
+  } else G <- NULL
   if (!is.null(X.quanti)) 
     Y1 <- as.matrix(X.quanti) else Y1 <- NULL
   Y <- cbind(Y1,G)
@@ -70,7 +74,7 @@ predict.clustvar <- function(object, X.quanti=NULL,X.quali=NULL,...)
   scores <- matrix(NA,nrow(Y),length(beta))
   for (g in 1: length(beta))
   {
-    Yg <- as.matrix(Y[,which(indexg==g)])
+    Yg <- as.matrix(Y[,which(indexg==g), drop=FALSE])
     scores[,g] <-Yg %*% beta[[g]][-1] +  beta[[g]][1]
   }
   colnames(scores) <- paste("cluster", 1:length(beta), sep = "")

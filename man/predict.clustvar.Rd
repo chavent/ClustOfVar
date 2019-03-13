@@ -4,7 +4,8 @@
 \alias{predict.clustvar}
 \title{Scores of new objects on the synthetic variables of a given partition}
 \usage{
-\method{predict}{clustvar}(object, X.quanti = NULL, X.quali = NULL, ...)
+\method{predict}{clustvar}(object, X.quanti = NULL, X.quali = NULL,
+  ...)
 }
 \arguments{
 \item{object}{an object of class clustvar}
