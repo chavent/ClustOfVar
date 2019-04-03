@@ -25,59 +25,116 @@
 predict.clustvar <- function(object, X.quanti=NULL,X.quali=NULL,...)
 {
   part <- object
+  
   if (!inherits(part, "clustvar")) 
     stop("use only with \"clustvar\" objects")
-  #split.data<-splitmix(data)
-  #X.quanti<-split.data$X.quanti
-  #X.quali<-split.data$X.quali
+
   pfin <- part$cluster
   indexj <- part$rec$indexj
-  indexg<-NULL
+  indexg <- NULL
+  
   for (i in 1:length(indexj))
-    indexg[i]<-pfin[indexj[i]] #ds le cas quanti, indexg=pfin
-  if (!is.null(X.quali)) 
-    #G <- PCAmixdata::recodqual(X.quali) 
-  {
-    GNA <- PCAmixdata::tab.disjonctif.NA(X.quali, rename.level=FALSE)
-    G <- replace(GNA,is.na(GNA),0)
-  } else G <- NULL
-  if (!is.null(X.quanti)) 
-    Y1 <- as.matrix(X.quanti) else Y1 <- NULL
-  Y <- cbind(Y1,G)
-  n <- nrow(Y)
+    indexg[i]<-pfin[indexj[i]] 
+  
   beta <- part$coef
   
-  if (ncol(Y)!=ncol(part$rec$Y))
-    stop("The number of categories in the learning set is different than in X.quali")
+ ####################### 
+  train.rec <- part$rec
+  train.rename.level <-  TRUE
   
   if (!is.null(X.quanti)) 
   {
     label <- rownames(X.quanti)
     n1 <- nrow(X.quanti)
-    p1 <- ncol(X.quanti)
-    if (p1 != part$rec$p1) stop("The number of variables in X.quanti must be the same than in the learning set")
-  }
+    if (is.null(train.rec$X.quanti))
+      stop("No quantitative dataset for training PCAmix", call. = FALSE)       
+    if (!setequal(colnames(train.rec$X.quanti), colnames(X.quanti)))
+      stop("The names of the columns in X.quanti and in the learning dataset
+           are different", call. = FALSE)
+    Y1 <- as.matrix(X.quanti[,colnames(train.rec$X.quanti)])
+    # imput missing values with mean values in the train dataset
+    if (any(is.na(Y1))) 
+    {
+      for (v in 1:ncol(Y1))
+      {
+        ind <- which(is.na(Y1[,v])==TRUE)
+        if(length(ind)>=1)
+          Y1[ind,v] <- train.rec$g[v]
+      }
+    }
+  } else Y1 <- NULL
+  
   if (!is.null(X.quali))
   {
     label <- rownames(X.quali)
-    n2 <- nrow(as.matrix(X.quali))
-    p2 <- ncol(as.matrix(X.quali))
-    if (p2 != part$rec$p2) stop("The number of variables in X.quali must be the same than in the learning set")
-  }
-  if (!is.null(X.quanti)&& !is.null(X.quali))
+    n2 <- nrow(X.quali)
+    p2 <- ncol(X.quali)
+    if (is.null(train.rec$X.quali))
+      stop("No qualitative dataset for training PCAmix", call. = FALSE)  
+    if (!setequal(colnames(train.rec$X.quali), colnames(X.quali)))
+      stop("The names of the columns in X.quali and in the learning dataset
+           are different", call. = FALSE)
+    GNA <- PCAmixdata::tab.disjonctif.NA(X.quali, 
+                                         rename.level = train.rename.level)
+    G <- as.matrix(replace(GNA,is.na(GNA),0))
+
+    if (!setequal(colnames(train.rec$G),colnames(G)))
+    {
+      #levels in train not in test : levels are merged in test
+      if (length(setdiff(colnames(train.rec$G), colnames(G))) > 0)
+      {
+        for (v in 1:p2)
+          levels(X.quali[,v]) <- union(levels(X.quali[,v]),
+                                              levels(train.rec$X.quali[,v]))
+        GNA <- PCAmixdata::tab.disjonctif.NA(X.quali, 
+                                             rename.level = train.rename.level)
+        G <- as.matrix(replace(GNA,is.na(GNA),0))
+      }
+      
+      #levels in test not in train : observations are removed
+      if (length(setdiff(colnames(G), colnames(train.rec$G))) > 0)
+      { 
+        if (length(setdiff(colnames(G), colnames(train.rec$G))) == length(colnames(G)))
+          stop("No level in common between the test and the training dataset",
+               call. = FALSE)
+        G2 <- G[,is.element(colnames(G), colnames(train.rec$G)), drop=FALSE]
+        if (length(which(apply(G2,1,sum) < p2)) == nrow(G))
+          stop("No observation in the test dataset can be predicted", 
+               call. = FALSE)
+        G <- G2
+        if (any(apply(G2,1,sum) < p2))
+        {
+          warning("Predictions can not be preformed for some observations")
+          G <- G2[-which(apply(G2,1,sum) < p2),, drop=FALSE]
+          if (!is.null(Y1))
+            Y1 <- Y1[-which(apply(G2,1,sum) < p2),,drop=FALSE]
+        }
+      }
+    }
+  G <- G[ , colnames(train.rec$G), drop = FALSE]
+  } else G <- NULL
+  
+  if (!is.null(X.quanti) && !is.null(X.quali))
   {
-    if (n1 != n2) stop("The number of objects in X.quanti and X.quali must be the same")
-    if (sum(rownames(X.quali)!=rownames(X.quanti))!=0) stop("The names of the objects in X.quanti and X.quali must be the same")
+    if (n1 != n2) 
+      stop("The number of objects in X.quanti and X.quali must be 
+                       the same", call. = FALSE)
+    if (sum(rownames(X.quali)!=rownames(X.quanti))!=0) 
+      stop("The names/order of the objects in X.quanti and X.quali must be the same", 
+           call. = FALSE)
   }
   
+  Y <- cbind(Y1,G)
+  n <- nrow(Y)
   
-  scores <- matrix(NA,nrow(Y),length(beta))
+  scores <- matrix(NA, nrow(Y), length(beta))
+  
   for (g in 1: length(beta))
   {
-    Yg <- as.matrix(Y[,which(indexg==g), drop=FALSE])
+    Yg <- Y[,which(indexg==g), drop=FALSE]
     scores[,g] <-Yg %*% beta[[g]][-1] +  beta[[g]][1]
   }
   colnames(scores) <- paste("cluster", 1:length(beta), sep = "")
-  rownames(scores) <- label
+  rownames(scores) <- rownames(Y)
   return(scores)
 }

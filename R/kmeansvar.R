@@ -87,6 +87,8 @@ kmeansvar <- function(X.quanti=NULL, X.quali=NULL, init,iter.max=150,nstart=1,ma
 {
   cl <- match.call()
   rec <- PCAmixdata::recod(X.quanti,X.quali, rename.level=TRUE)
+  X.quanti <- rec$X.quanti
+  X.quali <- rec$X.quali
   n <- rec$n
   p <- rec$p		#total number of variables
   p1 <- rec$p1	#number of numerical variables

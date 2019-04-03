@@ -24,7 +24,7 @@ selvar <- function(part,nsel)
   if (!inherits(part, "clustvar")) 
     stop("use only with \"clustvar\" objects")
   if (nsel!=abs(as.integer(nsel)))
-    strop("nsel must be a positive integer")
+    stop("nsel must be a positive integer")
   sel <- function(x)
   {
     if (nrow(x) < nsel) 
