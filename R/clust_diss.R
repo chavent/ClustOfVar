@@ -26,6 +26,7 @@ clust_diss <- function(A,B) {
   valproB <- repB$sv^2
   valproAUB <- repAUB$sv^2
   crit <- valproA+valproB-valproAUB
+  if (crit < 1e-7) crit <- 0
   return(crit)
 }
 
