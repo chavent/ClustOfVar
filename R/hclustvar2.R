@@ -1,22 +1,9 @@
 #' @export
 #' @importFrom stats cor cutree var
-#' @name hclustvar
-#' @title  Hierarchical clustering of variables
-#' @description Ascendant hierarchical clustering of a set of variables.  Variables can be
-#' quantitative, qualitative or a mixture of both. The aggregation criterion
-#' is the decrease in homogeneity for the clusters being merged. The
-#' homogeneity of a cluster is the sum of the correlation ratio (for
-#' qualitative variables) and the squared correlation (for quantitative
-#' variables) between the variables and the center of the cluster which is the
-#' first principal component of PCAmix. PCAmix is defined for a mixture of
-#' qualitative and quantitative variables and includes ordinary principal
-#' component analysis (PCA) and multiple correspondence analysis (MCA) as
-#' special cases. Missing values are replaced by means for quantitative
-#' variables and by zeros in the indicator matrix for qualitative variables.
-#' @param X.quanti a numeric matrix of data, or an object that can be coerced to such a matrix
-#' (such as a numeric vector or a data frame with all numeric columns).
-#' @param X.quali a categorical matrix of data, or an object that can be coerced to such a matrix
-#' (such as a character vector, a factor or a data frame with all factor columns).
+#' @name hclustvar2
+#' @title  Hierarchical clustering of variables from a covariance matrix
+#' @description Ascendant hierarchical clustering of a set of variables from a covariance/correlation matrix. 
+#' @param x a covariance or correlation matrix.
 #' @param init an initial partition (a vector of integers indicating the
 #' cluster to which each variable is allocated).
 #' @return 
@@ -29,54 +16,29 @@
 #' this stage.  If j is positive then the merge was with the cluster formed at
 #' the (earlier) stage j of the algorithm.  Thus negative entries in \code{merge} indicate agglomerations of singletons, and positive entries
 #' indicate agglomerations of non-singletons. }
-#' @details If the quantitative and qualitative data are in a same dataframe, the function
-#' \code{PCAmixdata::splitmix} can be used to extract automatically the qualitative and the quantitative
-#' data in two separated dataframes.
 #' @seealso \code{\link{cutreevar}}, \code{\link{plot.hclustvar}},
 #' \code{\link{stability}}
-#' @references Chavent, M., Liquet, B., Kuentz, V., Saracco, J. (2012),
-#' ClustOfVar: An R Package for the Clustering of Variables. Journal of
-#' Statistical Software, Vol. 50, pp. 1-16.
 #' @keywords cluster multivariate
 #' @examples
-#' #quantitative variables
 #' data(decathlon)
-#' tree <- hclustvar(X.quanti=decathlon[,1:10], init=NULL)
-#' plot(tree)
-#'
-#' #qualitative variables with missing values
-#' data(vnf)
-#' tree_NA <- hclustvar(X.quali=vnf)
-#' plot(tree_NA)
-#' vnf2<-na.omit(vnf)
-#' tree <- hclustvar(X.quali=vnf2)
-#' plot(tree)
-#'
-#' #mixture of quantitative and qualitative variables
-#' data(wine)
-#' X.quanti <- PCAmixdata::splitmix(wine)$X.quanti
-#' X.quali <- PCAmixdata::splitmix(wine)$X.quali
-#' tree <- hclustvar(X.quanti,X.quali)
-#' plot(tree)
+#' x <- cor(decathlon[,1:10])
+#' tree <- hclustvar2(x, init=NULL)
+#' plot(tree, hang = -1, xlab="", sub="")
 #'
 
-hclustvar <- function(X.quanti=NULL, X.quali=NULL, init=NULL) {
+hclustvar2 <- function(x, init=NULL) {
   cl <- match.call()
-  rec <- PCAmixdata::recod(X.quanti,X.quali,rename.level=TRUE)
-  X <- rec$X     
-  Z <- rec$Z		
-  indexj <- rec$indexj 
-  n <- rec$n
+  # test if x is a p times p positive definite symetric matrix
   if (is.null(init)) {
-    p <- rec$p
+    p <- nrow(x)
     init <- 1:p
-    labels <- colnames(X)
+    labels <- colnames(x)
   } else {
     p <- max(init)
     labels <- paste("cluster", 1:p, sep = "")
   }
+  if (p <= 2) stop("The number of variables must be greater than 2.")
   
-  if (p<=2) stop("The number of variables must be greater than 2.")
   MAXVAL <- 1.0e12
   flag <- rep(1, p)                          # active/dead indicator
   a <- rep(0, p-1)                           # left subnode on clustering
@@ -87,16 +49,13 @@ hclustvar <- function(X.quanti=NULL, X.quali=NULL, init=NULL) {
   card <- rep(1, p)                          # cardinalities
   order <- rep(0, p)                         # R-compatible order for plotting
   
-  diss<-matrix(0,p,p)
+  diss <- matrix(0,p,p)
   #debut <- Sys.time()
   for (i in 1:(p-1)) {
-    a <- i+1
-    for (j in a:p) {
+    for (j in (i+1):p) {
       A <- which(init==i)
       B <- which(init==j)
-      matA <- Z[,which(is.element(indexj,A))]
-      matB <- Z[,which(is.element(indexj,B))]
-      diss[i,j] <-clust_diss(matA,matB)
+      diss[i,j] <-clust_diss2(x,A,B)
       diss[j,i] <- diss[i,j]
     }   
   }
@@ -127,11 +86,9 @@ hclustvar <- function(X.quanti=NULL, X.quali=NULL, init=NULL) {
       clus1 <- nnsnnsdiss$nn[minobs] }
     indicescol<-which(clusmat[,ncl+1]==clus1)
     A <- which(init %in% indicescol)
-    Xclus1<-Z[,which(is.element(indexj,A))]
     indicescol<-which(clusmat[,ncl+1]==clus2)
     B <- which(init %in% indicescol)
-    Xclus2<-Z[,which(is.element(indexj,B))]
-    matclus1<-cbind(Xclus1,Xclus2)
+    matclus1<-c(A,B)
     # So, agglomeration of pair clus1 < clus2 defines cluster ncl
     #------------------------------------ Block for subnode labels 
     a[ncl] <- clus1                       # aine, or left child node
@@ -169,8 +126,7 @@ hclustvar <- function(X.quanti=NULL, X.quali=NULL, init=NULL) {
       if ( (i != clus1) && (i != clus2) && (flag[i] == 1) ) {
         indicescol <- which(clusmat[,ncl+1]==i)
         A <- which(init %in% indicescol)
-        mati<-Z[,which(is.element(indexj,A))]
-        diss[clus1,i] <- clust_diss(matclus1,mati)
+        diss[clus1,i] <- clust_diss2(x, matclus1,A)
         diss[i,clus1] <- diss[clus1,i]
       }
     }
@@ -219,7 +175,8 @@ hclustvar <- function(X.quanti=NULL, X.quali=NULL, init=NULL) {
   xcall <- "hierclust(X)"
   class(xcall) <- "call"
   
-  retlist <- list(call = cl,rec=rec,init=init,merge=merge,height=lev[(p-1):1],order=orderlist,labels=labels,clusmat=clusmat,X.quanti=X.quanti,X.quali=X.quali)
-  class(retlist) <- c("hclustvar","hclust")
+  retlist <- list(call = cl, init=init, merge=merge,height=lev[(p-1):1],
+                  order=orderlist, labels=labels, clusmat=clusmat)
+  class(retlist) <- c("hclust")
   retlist
 }

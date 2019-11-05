@@ -25,7 +25,7 @@ clusterscore <- function(Z)
   Ztilde <-Z/sqrt(n)
   e <- svd(Ztilde)
   f <- e$u[,1]*e$d[1]*sqrt(n) 
-  sv<-e$d[1]
+  sv <-e$d[1]
   v <- e$v[,1]
   return(list(f=f,sv=sv,v=v))	
 }
