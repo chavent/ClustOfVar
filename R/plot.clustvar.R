@@ -50,7 +50,7 @@ plot.clustvar<-function(x,...){
       coord.quanti <- res.PCAmix$quanti$coord[, 1,drop=F]
       coord.quanti <- coord.quanti[order(coord.quanti), ,drop=F]
       dotchart(coord.quanti[, 1, drop=F],xlab="Correlation with the synthetic variable", 
-               main=paste0("Cluster ",i), xlim=c(-1,1),gcolor="white")
+               main=paste0("Cluster ",i), xlim=c(-1,1),gcolor="white", ...)
       res.coord.quanti[[i]] <- coord.quanti[, 1, drop=F]
       #plot(res.PCAmix, choice="cor", axes=c(1,2),main=paste0("Correlation circle of quantitative variables of ",names.group[i]))
     }
@@ -59,7 +59,7 @@ plot.clustvar<-function(x,...){
       coord.categ <- res.PCAmix$levels$coord[, 1,drop=F]
       coord.categ <- coord.categ[order(coord.categ), ,drop=F]      
       dotchart(coord.categ[, 1, drop=F],xlab="Mean value of the synthetic variable", 
-               main=paste0("Cluster ",i),gcolor="white")
+               main=paste0("Cluster ",i),gcolor="white", ...)
       res.coord.levels[[i]] <- coord.categ[, 1, drop=F]
     }
     
@@ -67,14 +67,14 @@ plot.clustvar<-function(x,...){
       coord.categ <- res.PCAmix$levels$coord[, 1,drop=F]
       coord.categ <- coord.categ[order(coord.categ), ,drop=F]      
       dotchart(coord.categ[, 1, drop=F],xlab="Mean value of the synthetic variable", 
-               main=paste0("Cluster ",i),gcolor="white")
+               main=paste0("Cluster ",i),gcolor="white", ...)
       res.coord.levels[[i]] <- coord.categ[, 1, drop=F]
       
       
       coord.quanti <- res.PCAmix$quanti$coord[, 1,drop=F]
       coord.quanti <- coord.quanti[order(coord.quanti), ,drop=F]      
       dotchart(coord.quanti[, 1, drop=F],xlab="Correlation with the synthetic variable", 
-               main=paste0("Cluster ",i), xlim=c(-1,1),gcolor="white")  
+               main=paste0("Cluster ",i), xlim=c(-1,1),gcolor="white", ...)  
       res.coord.quanti[[i]] <- coord.quanti[, 1, drop=F]
       #plot(res.PCAmix, choice="cor", axes=c(1,2),cex=0.5, main=paste0("Correlation circle of quantitative variables of ",names.group[i]))
     }
