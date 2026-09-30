@@ -1,0 +1,13 @@
+\name{protein}
+\alias{protein}
+\title{Protein data}
+\format{A data frame with 25 rows (the European countries) and 9 columns (the food groups)}
+\source{
+Originated by A. Weber and cited in Hand et al., A Handbook of Small Data Sets, (1994, p. 297).
+}
+\description{
+The data measure the amount of protein consumed for nine food groups in
+25 European countries. The nine food groups are red meat (RedMeat), white meat (WhiteMeat),
+eggs (Eggs), milk (Milk), fish (Fish), cereal (Cereal), starch (Starch), nuts (Nuts), and fruits and vegetables (FruitVeg).
+}
+

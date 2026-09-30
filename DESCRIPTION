@@ -1,0 +1,22 @@
+Package: ClustOfVar
+Type: Package
+Title: Clustering of Variables
+Version: 1.2
+Authors@R: c(person("Marie", "Chavent", role = c("aut", "cre"),
+                    email = "Marie.Chavent@u-bordeaux.fr"),
+             person("Vanessa", "Kuentz", role = "aut"),
+             person("Benoit", "Liquet", role = "aut"),
+             person("Jerome", "Saracco", role = "aut"))
+Author: Marie Chavent [aut, cre],
+    Vanessa Kuentz [aut],
+    Benoit Liquet [aut],
+    Jerome Saracco [aut]
+Maintainer: Marie Chavent <Marie.Chavent@u-bordeaux.fr>
+Description: Cluster analysis of a set of variables. Variables can be quantitative, qualitative or a mixture of both.
+License: GPL (>=2.0)
+Depends:
+    R (>= 3.0.0)
+Imports:
+  PCAmixdata
+RoxygenNote: 7.3.3
+Encoding: UTF-8
